@@ -153,6 +153,23 @@ function showNotification(message) {
 
 // ⏲️ Periodic sync every 15 seconds
 setInterval(syncWithServer, 15000);
+async function fetchQuotesFromServer() {
+  try {
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts?_limit=3");
+    const data = await response.json();
+
+    const serverQuotes = data.map(item => ({
+      text: item.title,
+      category: "Server"
+    }));
+
+    return serverQuotes;
+  } catch (error) {
+    console.error("Failed to fetch quotes from server:", error);
+    return [];
+  }
+}
+
 
 // 🎯 Event Listeners
 document.getElementById("newQuote").addEventListener("click", showRandomQuote);

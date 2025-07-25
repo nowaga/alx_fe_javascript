@@ -69,6 +69,7 @@ function addQuote() {
     saveQuotes();
     populateCategories();
     filterQuotes();
+    pushQuotesToServer(); // push new quote to server
     quoteTextInput.value = "";
     quoteCategoryInput.value = "";
   }
@@ -141,18 +142,29 @@ function syncWithServer() {
     });
 }
 
-// 🔔 Notify users of sync/conflict
-function showNotification(message) {
-  const notice = document.getElementById("notification");
-  notice.textContent = message;
-  notice.style.display = "block";
-  setTimeout(() => {
-    notice.style.display = "none";
-  }, 4000);
+// 🆕 Push local quotes to the server (simulated)
+async function pushQuotesToServer() {
+  try {
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(quotes)
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to push quotes to server");
+    }
+
+    const result = await response.json();
+    console.log("Quotes pushed to server:", result);
+  } catch (error) {
+    console.error("Error pushing quotes to server:", error);
+  }
 }
 
-// ⏲️ Periodic sync every 15 seconds
-setInterval(syncWithServer, 15000);
+// 📥 Fetch quotes (helper)
 async function fetchQuotesFromServer() {
   try {
     const response = await fetch("https://jsonplaceholder.typicode.com/posts?_limit=3");
@@ -170,6 +182,19 @@ async function fetchQuotesFromServer() {
   }
 }
 
+// 🔔 Notify users of sync/conflict
+function showNotification(message) {
+  const notice = document.getElementById("notification");
+  notice.textContent = message;
+  notice.style.display = "block";
+  setTimeout(() => {
+    notice.style.display = "none";
+  }, 4000);
+}
+
+// ⏲️ Periodic sync
+setInterval(syncWithServer, 15000);
+setInterval(pushQuotesToServer, 20000); // 🆕 push to server every 20 seconds
 
 // 🎯 Event Listeners
 document.getElementById("newQuote").addEventListener("click", showRandomQuote);

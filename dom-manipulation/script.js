@@ -107,6 +107,10 @@ function importFromJsonFile(event) {
   };
   fileReader.readAsText(event.target.files[0]);
 }
+function syncQuotes() {
+  syncWithServer();
+  pushQuotesToServer();
+}
 
 // 🔁 Periodically fetch new quotes from "server"
 function syncWithServer() {

@@ -10,7 +10,7 @@ function showRandomQuote() {
   const quoteDisplay = document.getElementById("quoteDisplay");
   const randomIndex = Math.floor(Math.random() * quotes.length);
   const quote = quotes[randomIndex];
-  quoteDisplay.textContent = `"${quote.text}" — ${quote.category}`;
+  quoteDisplay.innerHTML = `"${quote.text}" — <em>${quote.category}</em>`;
 }
 
 // Add a new quote
@@ -26,15 +26,14 @@ function addQuote() {
       text: newQuoteText,
       category: newQuoteCategory
     };
+
     quotes.push(newQuote);
-    showRandomQuote(); // Optional: show the newly added quote
+    showRandomQuote(); // show new quote
     quoteTextInput.value = "";
     quoteCategoryInput.value = "";
   }
 }
 
-// You have to Wait until the DOM is fully loaded before attaching event listeners
-document.addEventListener("DOMContentLoaded", function () {
-  document.getElementById("newQuote").addEventListener("click", showRandomQuote);
-  document.getElementById("addQuote").addEventListener("click", addQuote);
-});
+// Event listeners
+document.getElementById("newQuote").addEventListener("click", showRandomQuote);
+document.getElementById("addQuote").addEventListener("click", addQuote);

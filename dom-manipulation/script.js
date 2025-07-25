@@ -30,9 +30,20 @@ function addQuote() {
       text: newQuoteText,
       category: newQuoteCategory
     };
-
     quotes.push(newQuote);
-    showRandomQuote(); // show new quote
+
+    // Clear existing content in quoteDisplay
+    const quoteDisplay = document.getElementById("quoteDisplay");
+    quoteDisplay.innerHTML = "";
+
+    // Create new DOM elements
+    const quoteElement = document.createElement("p");
+    quoteElement.textContent = `"${newQuote.text}" — ${newQuote.category}`;
+
+    // Append to DOM
+    quoteDisplay.appendChild(quoteElement);
+
+    // Clear inputs
     quoteTextInput.value = "";
     quoteCategoryInput.value = "";
   }
